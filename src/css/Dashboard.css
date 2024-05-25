@@ -110,6 +110,7 @@
   box-shadow: 0 0 20px var(--shadow-color);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   position: absolute;
+  text-decoration: none;
 }
 
 #show-courses-btn:hover {

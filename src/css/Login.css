@@ -169,3 +169,12 @@
   text-decoration: none;
   color: #2b688076;
 }
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
+  display: flex;
+  position: absolute;
+  margin-top: -200px;
+}
