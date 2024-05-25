@@ -1,0 +1,171 @@
+:root {
+  --background-color: #1fb6f176;
+  --button-background-color: #06314276;
+  --shadow-color: #31313180;
+  --dark-shadow-color: #313131a2;
+}
+
+.Login {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background: var(--background-color);
+  user-select: none;
+  width: 100%;
+  height: 100vh;
+}
+
+.header {
+  width: 100%;
+  height: 80px;
+  background: #ffffff;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px var(--shadow-color);
+  position: relative;
+}
+
+.logo,
+.logo > a {
+  margin: 10px;
+  padding: 15px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+}
+
+.main {
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  margin: 150px;
+  position: absolute;
+  width: 1000px;
+  height: 620px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 0 20px var(--shadow-color);
+}
+
+.main-content {
+  margin-top: -130px;
+  padding: 30px;
+  position: absolute;
+}
+
+.main-content > #main-title {
+  margin: 15px;
+}
+
+.main-content > #introduction > #img > img {
+  height: 350px;
+  border-radius: 10px;
+  margin: 15px;
+}
+
+.main-content > #introduction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.main-content > #introduction > #introduction-text {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 15px;
+}
+
+.main-content > #open-my-courses-btn {
+  position: absolute;
+  margin: 25px 15px;
+  padding: 25px;
+  border-radius: 10px;
+  border: none;
+  background: var(--button-background-color);
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-field {
+  position: relative;
+  display: flex;
+  margin-left: 1400px;
+  margin-top: -270px;
+  width: 350px;
+  height: 350px;
+  background: #ffffff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 0 20px var(--shadow-color);
+}
+
+.login-field > .inputs {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 50px;
+  margin-top: -50px;
+}
+
+.login-field > .inputs > input {
+  margin: 10px;
+  width: 300px;
+  height: 30px;
+  border: 0;
+  border-bottom: 1px solid #2b2b2b;
+  outline: 0;
+  font-size: 15px;
+}
+
+.login-field > #login-title {
+  position: fixed;
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+#username-label,
+#password-label {
+  margin-left: 10px;
+  text-align: start;
+  margin-bottom: -10px;
+  font-weight: bold;
+}
+
+.login-btn {
+  margin-bottom: -200px;
+  justify-content: center;
+  align-items: center;
+  margin-left: -50px;
+  padding: 100px;
+}
+
+.login-btn > #login-btn {
+  padding: 20px 50px;
+  border-radius: 15px;
+  border: 1px white solid;
+  background: var(--button-background-color);
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: -30px;
+  margin-left: 50px;
+}
+
+#forgot-password {
+  position: absolute;
+  margin-bottom: -300px;
+  margin-left: -150px;
+}
+
+#forgot-password > a {
+  text-decoration: none;
+  color: #2b688076;
+}
