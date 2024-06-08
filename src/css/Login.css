@@ -138,16 +138,9 @@
   font-weight: bold;
 }
 
-.login-btn {
-  margin-bottom: -200px;
-  justify-content: center;
-  align-items: center;
-  margin-left: -50px;
-  padding: 100px;
-}
-
-.login-btn > #login-btn {
-  padding: 20px 50px;
+#login-btn {
+  bottom: 50px;
+  padding: 20px 30px;
   border-radius: 15px;
   border: 1px white solid;
   background: var(--button-background-color);
@@ -155,8 +148,7 @@
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: -30px;
-  margin-left: 50px;
+  position: absolute;
 }
 
 #forgot-password {
@@ -176,5 +168,5 @@
   margin: 10px 0;
   display: flex;
   position: absolute;
-  margin-top: -200px;
+  top: 40px;
 }

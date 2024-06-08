@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { collection, getDocs, DocumentData } from "@firebase/firestore";
-import { firebase } from "../firebase/firebase";
-import "../css/Login.css";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  collection,
+  getDocs,
+  DocumentData,
+  doc,
+  updateDoc,
+} from "@firebase/firestore";
+import { firestore } from "../firebase/firebase";
+
 import { deleteCookie, setCookie } from "../Cookie";
+import { generateUniqueId, getUsername } from "../Utils";
+
+import "../css/Login.css";
 
 interface LoginData {
-  name: string;
+  fullName: string;
   password: string;
+  id: string;
+  uniqueId?: string;
 }
 
 export const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loginData, setLoginData] = useState<LoginData[]>([]);
   const [error, setError] = useState<string>("");
-  const dbRef = collection(firebase, "logins");
+  const dbRef = collection(firestore, "logins");
   const navigate = useNavigate();
 
   window.addEventListener("close", () => {
@@ -30,13 +41,13 @@ export const LoginPage: React.FC = () => {
 
         querySnapshot.forEach((doc: DocumentData) => {
           const data = doc.data() as LoginData;
-          fetchedData.push(data);
+          fetchedData.push({ ...data, id: doc.id });
         });
 
         setLoginData(fetchedData);
       } catch (e) {
         console.error(
-          "An error occurred while trying to fetch data from the database",
+          "An error occurred while trying to fetch data from the database: ",
           e
         );
       }
@@ -45,16 +56,34 @@ export const LoginPage: React.FC = () => {
     fetchData();
   }, [dbRef]);
 
-  const handleLoginClick = () => {
+  const handleLoginClick = async () => {
     const user = loginData.find(
-      (user) => user.name === username && user.password === password
+      (u) => u.fullName === fullName && u.password === password
     );
 
     if (user) {
       setError("");
-      navigate("/dashboard");
 
-      setCookie("username", username, 9999);
+      try {
+        if (!user.uniqueId) {
+          const uniqueId = generateUniqueId();
+
+          const userDoc = doc(firestore, "logins", user.id);
+          await updateDoc(userDoc, { uniqueId });
+
+          user.uniqueId = uniqueId;
+        }
+
+        setCookie("username", getUsername(fullName)!, 9999);
+        setCookie("uniqueId", user.uniqueId, 9999);
+
+        navigate("/dashboard");
+      } catch (e) {
+        console.error("Error updating user with unique ID: ", e);
+        setError(
+          "Ein Fehler ist während des Loginversuches aufgetreten. Bitte versuche es später erneut."
+        );
+      }
     } else {
       setError("Ungültiger Nutzername oder Passwort");
     }
@@ -64,7 +93,7 @@ export const LoginPage: React.FC = () => {
     <div className="Login">
       <div className="header">
         <h3 className="logo">
-          <Link to={"/"}>SchoolServer</Link>
+          <Link to={"/login"}>SchoolServer</Link>
         </h3>
       </div>
 
@@ -99,8 +128,8 @@ export const LoginPage: React.FC = () => {
                 type="text"
                 id="username-input-field"
                 autoComplete="off"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
               />
 
               <label htmlFor="password-input-field" id="password-label">
@@ -115,11 +144,9 @@ export const LoginPage: React.FC = () => {
               />
             </div>
 
-            <div className="login-btn">
-              <button id="login-btn" onClick={handleLoginClick}>
-                Login
-              </button>
-            </div>
+            <button id="login-btn" onClick={handleLoginClick}>
+              Login
+            </button>
 
             <span id="forgot-password">
               <a href="#" id="forgot-password-link">

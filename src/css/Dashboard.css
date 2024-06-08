@@ -1,3 +1,10 @@
+:root {
+  --background-color: #1fb6f176;
+  --button-background-color: #06314276;
+  --shadow-color: #31313180;
+  --dark-shadow-color: #313131a2;
+}
+
 .Dashboard {
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;

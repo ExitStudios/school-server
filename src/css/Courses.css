@@ -1,0 +1,46 @@
+:root {
+  --background-color: #1fb6f176;
+  --button-background-color: #06314276;
+  --shadow-color: #31313180;
+  --dark-shadow-color: #313131a2;
+}
+
+body {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  background: var(--background-color);
+  user-select: none;
+  height: 100%;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.Courses {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.courses-fields {
+  position: absolute;
+  top: 100px;
+  left: 50px;
+  right: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 5px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+.course-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

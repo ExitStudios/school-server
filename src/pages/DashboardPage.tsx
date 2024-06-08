@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import { deleteCookie, getCookie } from "../Cookie";
@@ -7,34 +6,21 @@ import "../css/Dashboard.css";
 
 export const DashboardPage = () => {
   window.addEventListener("close", () => {
-    deleteCookie("loginData");
+    deleteCookie("username");
   });
-
-  const replaceSpecialCharacters = (name: string) => {
-    return name.replace(/ü/g, "ue").replace(/ä/g, "ae").replace(/ö/g, "oe");
-  };
-
-  const getUsername = (name: string | null) => {
-    if (name)
-      return replaceSpecialCharacters(name).toLowerCase().replace(/\s/g, "_");
-    else return name;
-  };
 
   return (
     <div className="Dashboard">
       <div className="header">
         <h3 className="logo">
-          <Link to={"/"}>SchoolServer</Link>
+          <Link to={"/dashboard"}>SchoolServer</Link>
         </h3>
         <nav className="nav-tabs">
           <Link to={"/courses"} className="tab">
             <i className="fas fa-book"></i> Kurse
           </Link>
-          <Link
-            to={`/profiles/${getUsername(getCookie("username"))}`}
-            className="tab"
-          >
-            <i className="fas fa-book"></i> Profil
+          <Link to={`/profiles/${getCookie("username")}`} className="tab">
+            <i className="fas fa-head"></i> Profil
           </Link>
           <Link to={"/messages"} className="tab">
             <i className="fas fa-book"></i> Mitteilungen

@@ -11,4 +11,4 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const firebase = getFirestore(app);
+export const firestore = getFirestore(app);

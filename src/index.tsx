@@ -8,6 +8,11 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProfilePage } from "./pages/ProfilePage";
 
 import "./css/index.css";
+import { CoursesPage } from "./pages/CoursesPage";
+import { CoursePage } from "./pages/CoursePage";
+import { MessagesPage } from "./pages/MessagesPage";
+import { MessagePage } from "./pages/MessagePage";
+import { Settings } from "./pages/Settings";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +27,26 @@ const router = createBrowserRouter([
   {
     path: "/profiles/:profile",
     element: <ProfilePage />,
+  },
+  {
+    path: "/courses",
+    element: <CoursesPage />,
+  },
+  {
+    path: "/courses/:course",
+    element: <CoursePage />,
+  },
+  {
+    path: "/messages",
+    element: <MessagesPage />,
+  },
+  {
+    path: "/messages/:message",
+    element: <MessagePage />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
   },
 ]);
 
