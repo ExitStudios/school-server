@@ -6,20 +6,14 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import { firestore } from "../firebase/firebase";
 import { Header } from "../components/Header";
-import { getCookie, updateCookie } from "../Cookie";
+import { updateCookie } from "../typescript/Cookie";
+import { User } from "../typescript/User";
 
 import "../css/Profile.css";
-
-interface UserData {
-  name: string;
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-}
+import { Role } from "../typescript/Role";
 
 export const ProfilePage: React.FC = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [newName, setNewName] = useState("");
   const [newFullName, setNewFullName] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -37,13 +31,23 @@ export const ProfilePage: React.FC = () => {
         const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
-          const data = userDocSnap.data() as UserData;
-          setUserData(data);
-          setNewName(data.name ?? params.profile);
-          setNewFullName(data.fullName ?? "");
-          setNewEmail(data.email ?? "");
-          setNewPhoneNumber(data.phoneNumber ?? "");
-          setPassword(data.password ?? "");
+          const data = userDocSnap.data();
+          const user = new User(
+            data.name,
+            data.username,
+            data.password,
+            data.email,
+            data.phoneNumber,
+            userDocSnap.id,
+            data.role as Role
+          );
+
+          setUserData(user);
+          setNewName(user.getName());
+          setNewFullName(user.getUsername());
+          setNewEmail(user.getEmail());
+          setNewPhoneNumber(user.getPhoneNumber());
+          setPassword(user.getPassword());
         } else {
           console.log("User Document does not exist");
         }
@@ -91,21 +95,32 @@ export const ProfilePage: React.FC = () => {
         return;
       }
 
+      const updatedUser = new User(
+        newName,
+        newFullName,
+        password,
+        newEmail,
+        newPhoneNumber,
+        params.profile!,
+        userData!.getRole()
+      );
+
       await updateDoc(userDocRef, {
-        username: newName,
-        fullName: newFullName,
-        email: newEmail,
-        phoneNumber: newPhoneNumber,
-        password: password,
+        name: updatedUser.getName(),
+        fullName: updatedUser.getUsername(),
+        email: updatedUser.getEmail(),
+        phoneNumber: updatedUser.getPhoneNumber(),
+        password: updatedUser.getPassword(),
       });
 
       if (params.profile !== newName) {
         await setDoc(newUserDocRef, {
-          username: newName,
-          fullName: newFullName,
-          email: newEmail,
-          phoneNumber: newPhoneNumber,
-          password: password,
+          name: updatedUser.getName(),
+          fullName: updatedUser.getUsername(),
+          email: updatedUser.getEmail(),
+          phoneNumber: updatedUser.getPhoneNumber(),
+          password: updatedUser.getPassword(),
+          role: updatedUser.getRole(),
         });
 
         await deleteDoc(userDocRef);

@@ -6,45 +6,45 @@ import {
   DocumentData,
   doc,
   updateDoc,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
-
-import { deleteCookie, setCookie } from "../Cookie";
-import { generateUniqueId, getUsername } from "../Utils";
-
+import { setCookie } from "../typescript/Cookie";
+import { generateUniqueId, getUsername } from "../typescript/Utils";
+import { User } from "../typescript/User";
 import "../css/Login.css";
-
-interface LoginData {
-  fullName: string;
-  password: string;
-  id: string;
-  uniqueId?: string;
-}
+import { Role } from "../typescript/Role";
 
 export const LoginPage: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [loginData, setLoginData] = useState<LoginData[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string>("");
   const dbRef = collection(firestore, "logins");
   const navigate = useNavigate();
-
-  window.addEventListener("close", () => {
-    deleteCookie("loginData");
-  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(dbRef);
-        const fetchedData: LoginData[] = [];
+        const fetchedUsers: User[] = [];
 
         querySnapshot.forEach((doc: DocumentData) => {
-          const data = doc.data() as LoginData;
-          fetchedData.push({ ...data, id: doc.id });
+          const data = doc.data();
+
+          const user = new User(
+            data.fullName,
+            data.username,
+            data.password,
+            data.email,
+            data.phoneNumber,
+            doc.id,
+            data.role as Role
+          );
+
+          fetchedUsers.push(user);
         });
 
-        setLoginData(fetchedData);
+        setUsers(fetchedUsers);
       } catch (e) {
         console.error(
           "An error occurred while trying to fetch data from the database: ",
@@ -57,25 +57,20 @@ export const LoginPage: React.FC = () => {
   }, [dbRef]);
 
   const handleLoginClick = async () => {
-    const user = loginData.find(
-      (u) => u.fullName === fullName && u.password === password
+    const user = users.find(
+      (u) => u.getName() === fullName && u.getPassword() === password
     );
 
     if (user) {
       setError("");
 
       try {
-        if (!user.uniqueId) {
-          const uniqueId = generateUniqueId();
+        const userDoc = doc(firestore, "logins", user.getId());
+        const uniqueId = generateUniqueId();
+        await updateDoc(userDoc, { uniqueId });
 
-          const userDoc = doc(firestore, "logins", user.id);
-          await updateDoc(userDoc, { uniqueId });
-
-          user.uniqueId = uniqueId;
-        }
-
-        setCookie("username", getUsername(fullName)!, 9999);
-        setCookie("uniqueId", user.uniqueId, 9999);
+        setCookie("uniqueId", uniqueId, 9999);
+        window.sessionStorage.setItem("username", getUsername(fullName)!);
 
         navigate("/dashboard");
       } catch (e) {
@@ -122,7 +117,7 @@ export const LoginPage: React.FC = () => {
 
             <div className="inputs">
               <label htmlFor="username-input-field" id="username-label">
-                Nutzername
+                Name
               </label>
               <input
                 type="text"
@@ -144,7 +139,7 @@ export const LoginPage: React.FC = () => {
               />
             </div>
 
-            <button id="login-btn" onClick={handleLoginClick}>
+            <button id="login-btn" onClick={handleLoginClick} type="submit">
               Login
             </button>
 

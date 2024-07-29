@@ -1,0 +1,38 @@
+.container {
+  padding: "20px";
+  max-width: "600px";
+  margin: "0 auto";
+  font-family: "Arial; sans-serif";
+}
+
+.messagesContainer {
+  border: "1px solid #ccc";
+  border-radius: "4px";
+  padding: "10px";
+  margin-bottom: "10px";
+  max-height: "300px";
+  overflow-y: "auto";
+}
+
+.message {
+  padding: "10px";
+  border-bottom: "1px solid #eee";
+}
+
+.inputContainer {
+  display: "flex";
+  align-items: "center";
+}
+
+.input {
+  flex: 1;
+  padding: "10px";
+  font-size: "16px";
+  margin-right: "10px";
+}
+
+.button {
+  padding: "10px 20px";
+  font-size: "16px";
+  cursor: "pointer";
+}

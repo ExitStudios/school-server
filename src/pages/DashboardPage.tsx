@@ -1,14 +1,8 @@
 import { Link } from "react-router-dom";
 
-import { deleteCookie, getCookie } from "../Cookie";
-
 import "../css/Dashboard.css";
 
 export const DashboardPage = () => {
-  window.addEventListener("close", () => {
-    deleteCookie("username");
-  });
-
   return (
     <div className="Dashboard">
       <div className="header">
@@ -19,7 +13,10 @@ export const DashboardPage = () => {
           <Link to={"/courses"} className="tab">
             <i className="fas fa-book"></i> Kurse
           </Link>
-          <Link to={`/profiles/${getCookie("username")}`} className="tab">
+          <Link
+            to={`/profiles/${window.sessionStorage.getItem("username")}`}
+            className="tab"
+          >
             <i className="fas fa-head"></i> Profil
           </Link>
           <Link to={"/messages"} className="tab">

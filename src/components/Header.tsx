@@ -1,14 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { deleteCookie, getCookie } from "../Cookie";
+import { deleteCookie, getCookie } from "../typescript/Cookie";
 
 import "../css/Header.css";
 
 export const Header = () => {
-  window.addEventListener("close", () => {
-    deleteCookie("loginData");
-  });
-
   return (
     <div className="header">
       <h3 className="logo">
