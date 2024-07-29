@@ -2,13 +2,26 @@ import "../css/Courses.css";
 import { CourseField } from "../components/CourseField";
 import { Header } from "../components/Header";
 import { Course } from "../typescript/Course";
+import { getCourseData } from "../typescript/Utils";
+import { useEffect, useState } from "react";
 
 export const CoursesPage = () => {
-  const course = new Course(
-    "Deutsch",
-    "Ein Fach für jeden!",
-    "https://www.gymnasium-beetzendorf.de/fotos/Schule2015.png"
+  const [course, setCourse] = useState<Course>(
+    new Course(
+      "COURSE_NOT_FOUND",
+      "The course you are trying to find was not found or is still loading",
+      "",
+      ""
+    )
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setCourse((await getCourseData("084305367614981528")) as Course);
+    };
+
+    fetchData();
+  });
 
   return (
     <div className="Courses">
